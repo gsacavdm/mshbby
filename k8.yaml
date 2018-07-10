@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mshbby
+spec:
+  template:
+    metadata:
+      labels:
+        app: mshbby
+    spec:
+      containers:
+      - name: mshbby
+        image: gsacavdm/mshbby:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000

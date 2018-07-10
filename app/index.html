@@ -43,22 +43,15 @@
   </style>
   <script language="javascript">
   selected = false;
+  lockVote = false;
 
   function getVotes() {
-    var url = "https://api.ipify.org?format=json";    
+    var url = "api/get";    
 
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET", url, false);
-    //Httpreq.send(null);
-    //return Httpreq.responseText; 
-    
-    return [
-      {name: "Todor", vote:"F"},
-      {name: "Jess", vote:"M"},
-      {name: "Jerry", vote:"M"},
-      {name: "Gabo", vote:"M"},
-      {name: "Sil", vote: "F"}
-    ]; 
+    Httpreq.send(null);
+    return JSON.parse(Httpreq.responseText);
   }
 
   function updateTable(votes) {
@@ -72,8 +65,8 @@
         voteMaleCell = row.insertCell();
 
         nameCell.textContent = vote.name;
-        if (vote.vote === "F") voteMaleCell.textContent = "Y";
-        if (vote.vote === "M") voteFemaleCell.textContent = "X";
+        if (vote.vote === "M") voteMaleCell.textContent = "Y";
+        if (vote.vote === "F") voteFemaleCell.textContent = "X";
     });
   }
 
@@ -88,7 +81,7 @@
   }  
 
   function validate() {
-    if (inputName.value && selected) {
+    if (inputName.value && selected && !lockVote) {
       voteButton.classList.remove("disabled");
       voteButton.classList.add("btn-danger");
       voteButton.disabled = false;
@@ -108,8 +101,16 @@
     else voteValue = "M";
     
     votes.push({name: inputName.value, vote: voteValue});
+
+    var url = "api/post";    
+    var Httpreq = new XMLHttpRequest();
+    Httpreq.open("POST", url, false);
+    Httpreq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    Httpreq.send(JSON.stringify(votes));
+
     updateSummary(votes);
     updateTable(votes);
+    lockVote = true;
   }
 
   votes = getVotes();
@@ -127,7 +128,7 @@
     <p class="lead center"><i>La familia Saca Cortez le da la bienvenida a su nuevo miembro! No, no cedí a las peticiones diarias de tener OTRO perro, más bien, vamos a tener un pequeñin! Pese a que tenemos un sobre que nos dice el sexo del bebé, Karla tranquilamente me está haciendo decidir entre esperarme mucho y esperarme mucho más, todo para hacerla de suspenso y tener un excusa para ponerme a hacer una página (que le daría verguenza a mis compañeros desarrolladores :P) para que todos voten a ver qué tan atinados son.</i></p>
   </div>
   <div class="row">
-    <img style="margin:auto" src="little-one-small.jpg" />
+    <img style="margin:auto" src="static/little-one-small.jpg" />
   </div>
 </div>
 
@@ -150,14 +151,14 @@
 
       <label class="btn btn-primary col-lg-4" onchange="select()">
         <input type="radio" name="girl-or-boy" id="girl" autocomplete="off" checked="false">
-        <img src="pinguigirl.png"><div> PanchitaH | <i>Panchita</i></div>
+        <img src="static/pinguigirl.png"><div> PanchitaH | <i>Panchita</i></div>
       </label>
 
       <div class="col-lg-2"></div>
 
       <label class="btn btn-primary col-lg-4" onchange="select()">
         <input type="radio" name="girl-or-boy" id="boy" autocomplete="off" checked="false">
-        <img src="pinguiboy.png"><div> NachitoU | <i>Nachito</i></div>
+        <img src="static/pinguiboy.png"><div> NachitoU | <i>Nachito</i></div>
       </label>
 
     </div>
