@@ -1,0 +1,236 @@
+<html lang="en">
+<head>
+  <title>Waddle it be? | Qué será?</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://bootswatch.com/4/minty/bootstrap.min.css">
+
+  <style>
+  .bs-docs-section {
+    margin-top: 64px
+  }
+
+  i {
+    color: #d18acf
+  }
+  .center {
+    width: 100%;
+    text-align: center
+  }
+  .name-section {
+    margin-bottom: 20px
+  }
+
+  .select-section {
+    margin-bottom: 20px
+  }
+
+  .label {
+    padding-right: 10px
+  }
+
+  .active {
+    background-color: #FF7851 !important;
+    border-color: #FF7851 !important;
+  }
+
+  .summary {
+    display: inline;
+    text-weight: bold
+  }
+  </style>
+  <script language="javascript">
+  selected = false;
+
+  function getVotes() {
+    var url = "https://api.ipify.org?format=json";    
+
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET", url, false);
+    //Httpreq.send(null);
+    //return Httpreq.responseText; 
+    
+    return [
+      {name: "Todor", vote:"F"},
+      {name: "Jess", vote:"M"},
+      {name: "Jerry", vote:"M"},
+      {name: "Gabo", vote:"M"},
+      {name: "Sil", vote: "F"}
+    ]; 
+  }
+
+  function updateTable(votes) {
+    length = table.rows.length;
+    for (i = 1; i < length; i++) table.deleteRow(1);
+
+    votes.forEach(vote => {
+        row = table.getElementsByTagName("tbody")[0].insertRow(table.length);
+        nameCell = row.insertCell();
+        voteFemaleCell = row.insertCell();
+        voteMaleCell = row.insertCell();
+
+        nameCell.textContent = vote.name;
+        if (vote.vote === "F") voteMaleCell.textContent = "Y";
+        if (vote.vote === "M") voteFemaleCell.textContent = "X";
+    });
+  }
+
+  function updateSummary(votes){
+    girlCount.textContent = votes.filter(v => v.vote === "F").length;
+    boyCount.textContent = votes.filter(v => v.vote === "M").length;
+  }
+
+  function select() {
+    selected = true;
+    validate()
+  }  
+
+  function validate() {
+    if (inputName.value && selected) {
+      voteButton.classList.remove("disabled");
+      voteButton.classList.add("btn-danger");
+      voteButton.disabled = false;
+      voteButton.textContent = "VOTE!";
+      voteButton.onclick = vote;
+    }
+  }
+  
+  function vote() {
+    voteButton.classList.add("disabled");
+    voteButton.classList.remove("btn-danger");
+    voteButton.disabled = true;
+    voteButton.textContent = "Thank you for voting!";
+
+    var voteValue;
+    if (girlVote.checked) voteValue = "F";
+    else voteValue = "M";
+    
+    votes.push({name: inputName.value, vote: voteValue});
+    updateSummary(votes);
+    updateTable(votes);
+  }
+
+  votes = getVotes();
+  </script>
+</head>
+<body>
+<div class="container">
+
+<div class="bs-docs-section">
+  <div class="row" style="text-align:center">
+    <h1 class="center">Waddle it be? | <i>Qué será?</i></h1>
+  </div>
+  <div class="row" style="margin-top:20px">
+    <p class="lead center">The Saca + Cortez / Cortez + Saca (I, Saca, refuse to hyphenate) is welcoming a new (finally human) member to the family. While we do have the envelop that tells us whether we'll have a boy or a girl, Karla has decided to torture me a bit, put me to work and have some voting fun. Yes, not all voting has to be a source of stress and end-of-the-world feelings. So, vote away. If you are right, you get to gloat, if you are wrong... well there go your chances to make a living as a fortuneteller. </p>
+    <p class="lead center"><i>La familia Saca Cortez le da la bienvenida a su nuevo miembro! No, no cedí a las peticiones diarias de tener OTRO perro, más bien, vamos a tener un pequeñin! Pese a que tenemos un sobre que nos dice el sexo del bebé, Karla tranquilamente me está haciendo decidir entre esperarme mucho y esperarme mucho más, todo para hacerla de suspenso y tener un excusa para ponerme a hacer una página (que le daría verguenza a mis compañeros desarrolladores :P) para que todos voten a ver qué tan atinados son.</i></p>
+  </div>
+  <div class="row">
+    <img style="margin:auto" src="little-one-small.jpg" />
+  </div>
+</div>
+
+<div class="bs-docs-section">
+  <div class="row">
+    <h2>Vote</h2>
+  </div>
+  <div class="row name-section">
+    <div class="col-lg-5">
+      <label class="label">1. Type your name | <i>Escribe tu nombre</i>:</label>
+      <input id="input-name" type="text" onkeypress="validate()" autofocus></input>
+    </div>
+  </div>
+  <div class="row">
+     <div class="col-lg-12">2. Click on your prediction | <i>Selecciona tu predicción</i>:</div>
+  </div>
+  <div class="row select-section">
+    <div class="btn-group btn-group-toggle" data-toggle="buttons" style="width:100%">  
+      <div class="col-lg-1"></div>
+
+      <label class="btn btn-primary col-lg-4" onchange="select()">
+        <input type="radio" name="girl-or-boy" id="girl" autocomplete="off" checked="false">
+        <img src="pinguigirl.png"><div> PanchitaH | <i>Panchita</i></div>
+      </label>
+
+      <div class="col-lg-2"></div>
+
+      <label class="btn btn-primary col-lg-4" onchange="select()">
+        <input type="radio" name="girl-or-boy" id="boy" autocomplete="off" checked="false">
+        <img src="pinguiboy.png"><div> NachitoU | <i>Nachito</i></div>
+      </label>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+    Note: Don't freak out (or get too excited) about the names, these are placeholders.
+    </div>
+  </div>
+  <div class="row" style="margin-bottom:25px">
+    <div class="col-lg-12">
+    <i>Nota: No se asusten (o emocionen... ya saben a quienes me refiero), estos nombres son temporales... Karla me lincha.</i>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-log-5">3. Cast your vote: <button id="vote-button" type="button" class="btn disabled" disabled>Make your selection first...</button></div>
+  </div>
+</div>
+
+<div class="bs-docs-section">
+  <div class="row">
+    <h2>So far... | <i> Hasta ahorita... </i></h2>
+  </div>
+
+  <div class="row">
+  <ul>
+    <li><div id="girl-count" class="summary">0</div> say we'll have a kick-ass Panchita... | <i> dicen que vamos a tener una increible (y parlanchina como su madre) Panchita. </i></li>
+    <li><div id="boy-count" class="summary">0</div> predict we'll have an awesome Nachito amongst our ranks... | <i> predicen que tendremos al legendario Nachito entre nosotros.</i></li>
+  <ul>
+  </div>
+
+  <div class= "row">
+  <table class="table table-hover" id="table">
+  <thead class="bg-light">
+    <tr>
+      <th>Name | <i> Nombre </i></th>
+      <th>PanchitaH | <i> Panchita </i></th>
+      <th>NachitoU | <i>Nachito</i></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr> 
+      <th>Gabo</th><th>X</th><th></th>
+    </tr>
+    <tr>
+      <th>Gabo</th><th>X</th><th></th>
+    </tr>
+    <tr>
+      <th>Gabo</th><th>X</th><th></th>
+    </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+<script language="javascript">
+inputName = document.getElementById("input-name");
+girlVote = document.getElementById("girl");
+boyVote = document.getElementById("boy");
+voteButton = document.getElementById("vote-button");
+girlCount= document.getElementById("girl-count");
+boyCount= document.getElementById("boy-count");
+table = document.getElementById("table");
+
+updateTable(votes);
+updateSummary(votes);
+</script>
+
+</body>
+</html>
