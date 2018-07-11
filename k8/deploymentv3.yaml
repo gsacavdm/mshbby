@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mshbbyv3
+spec:
+  template:
+    metadata:
+      labels:
+        app: mshbbyv3
+    spec:
+      containers:
+      - name: mshbbyv3
+        image: gsacavdm/mshbby:v3
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+          - name: mowshivolume
+            mountPath: /data
+        env:
+        - name: EMAIL_URL
+          valueFrom:
+            secretKeyRef:
+              name: mshbby
+              key: email
+      volumes:
+      - azureFile:
+          secretName: azurefileshare
+          shareName: mowshi
+        name: mowshivolume

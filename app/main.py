@@ -3,6 +3,7 @@ app = Flask(__name__, static_url_path='/static')
 
 import os
 import uuid
+import urllib2
 
 @app.route("/")
 def main():
@@ -40,6 +41,16 @@ def post2():
   guid = uuid.uuid4().hex
   with file('/data/vote-' + guid + '.json', 'w') as f:
     f.write(json.dumps(content)) 
+
+  try:
+    email_url = os.getenv('EMAIL_URL')
+    if (email_url != None):
+      req = urllib2.Request(email_url)
+      req.add_header('Content-Type', 'application/json')
+      response = urllib2.urlopen(req, json.dumps(content))
+  finally:
+    app.logger.info("Unable to send email.")
+
   return 'OK'
 
 if __name__ == '__main__':
