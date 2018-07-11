@@ -100,14 +100,14 @@
     if (girlVote.checked) voteValue = "F";
     else voteValue = "M";
     
-    vote = {name: inputName.value, vote: voteValue};
+    voteObject = {name: inputName.value, vote: voteValue};
 
     var url = "api/post2";    
     var Httpreq = new XMLHttpRequest();
     Httpreq.open("POST", url, false);
     Httpreq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    Httpreq.send(JSON.stringify(vote));
-
+    Httpreq.send(JSON.stringify(voteObject));
+    
     votes = getVotes();
 
     updateSummary(votes);
