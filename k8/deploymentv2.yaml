@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mshbbyv2
+spec:
+  template:
+    metadata:
+      labels:
+        app: mshbbyv2
+    spec:
+      containers:
+      - name: mshbbyv2
+        image: gsacavdm/mshbby:v2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+          - name: mowshivolume
+            mountPath: /data
+      volumes:
+      - azureFile:
+          secretName: azurefileshare
+          shareName: mowshi
+        name: mowshivolume

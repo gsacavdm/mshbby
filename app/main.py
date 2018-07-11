@@ -2,6 +2,7 @@ from flask import Flask, request, json
 app = Flask(__name__, static_url_path='/static')
 
 import os
+import uuid
 
 @app.route("/")
 def main():
@@ -16,9 +17,28 @@ def get():
   return votes
 
 @app.route("/api/post", methods = ['POST'])
-def put():
+def post():
   content = request.get_json()
   with file('votes.json', 'w') as f:
+    f.write(json.dumps(content)) 
+  return 'OK'
+
+@app.route("/api/get2")
+def get2():
+  votes = "["
+  for fn in os.listdir('/data/'):
+    with file('/data/' + fn) as f:
+      votes += f.read() + ","
+  if (len(votes) != 1):
+    votes = votes[:-1]
+  votes += "]"
+  return votes
+
+@app.route("/api/post2", methods = ['POST'])
+def post2():
+  content = request.get_json()
+  guid = uuid.uuid4().hex
+  with file('/data/vote-' + guid + '.json', 'w') as f:
     f.write(json.dumps(content)) 
   return 'OK'
 

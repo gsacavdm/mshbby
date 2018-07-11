@@ -46,7 +46,7 @@
   lockVote = false;
 
   function getVotes() {
-    var url = "api/get";    
+    var url = "api/get2";    
 
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET", url, false);
@@ -100,13 +100,15 @@
     if (girlVote.checked) voteValue = "F";
     else voteValue = "M";
     
-    votes.push({name: inputName.value, vote: voteValue});
+    vote = {name: inputName.value, vote: voteValue};
 
-    var url = "api/post";    
+    var url = "api/post2";    
     var Httpreq = new XMLHttpRequest();
     Httpreq.open("POST", url, false);
     Httpreq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    Httpreq.send(JSON.stringify(votes));
+    Httpreq.send(JSON.stringify(vote));
+
+    votes = getVotes();
 
     updateSummary(votes);
     updateTable(votes);
